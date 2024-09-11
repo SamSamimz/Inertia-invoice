@@ -7,12 +7,14 @@
         <h2 class="text-3xl font-bold mb-6 text-gray-800 text-center">
           Invoices
         </h2>
-        <button
-          type="button"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-        >
-          Create Invoice
-        </button>
+        <div>
+          <Link
+            :href="route('invoice.new')"
+            class="inline-flex items-center px-4 py-3 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out"
+          >
+            Create Invoice
+          </Link>
+        </div>
       </div>
 
       <div class="bg-white shadow-md rounded-lg overflow-hidden">
