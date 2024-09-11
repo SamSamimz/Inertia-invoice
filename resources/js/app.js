@@ -1,9 +1,13 @@
 import './bootstrap';
+import Alpine from 'alpinejs';
 import '../css/app.css';
 import { createApp, h } from 'vue'
 import { ZiggyVue } from '../../vendor/tightenco/ziggy'
 import { createInertiaApp, Link } from '@inertiajs/vue3'
 import DefaultLayout from './Layouts/DefaultLayout.vue';
+
+window.Alpine = Alpine;
+Alpine.start();
 
 createInertiaApp({
   resolve: name => {
