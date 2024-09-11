@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!--  -->
+    <!-- ***  -->
 
     <div class="container mx-auto py-8">
       <div class="flex align-center justify-between">
@@ -32,6 +32,11 @@
               <th
                 class="py-3 px-4 text-left text-xs font-medium uppercase tracking-wider"
               >
+                Customer
+              </th>
+              <th
+                class="py-3 px-4 text-left text-xs font-medium uppercase tracking-wider"
+              >
                 Date
               </th>
               <th
@@ -40,14 +45,9 @@
                 Total
               </th>
               <th
-                class="py-3 px-4 text-right text-xs font-medium uppercase tracking-wider"
-              >
-                Currency
-              </th>
-              <th
                 class="py-3 px-4 text-left text-xs font-medium uppercase tracking-wider"
               >
-                Payable Due Date
+                Due Date
               </th>
               <th
                 class="py-3 px-4 text-left text-xs font-medium uppercase tracking-wider"
@@ -62,14 +62,26 @@
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200 text-gray-700">
-            <tr>
-              <td class="py-3 px-4">INV-1001</td>
-              <td class="py-3 px-4">Website Design</td>
-              <td class="py-3 px-4">2024-09-01</td>
-              <td class="py-3 px-4 text-right">$500.00</td>
-              <td class="py-3 px-4 text-right">USD</td>
-              <td class="py-3 px-4">2024-09-30</td>
-              <td class="py-3 px-4">Paid</td>
+            <tr v-for="invoice in invoices.data" :key="invoice.id">
+              <td class="py-3 px-4">{{ invoice.code }}</td>
+              <td class="py-3 px-4">{{ invoice.title }}</td>
+              <td class="py-3 px-4">{{ invoice.customer.name }}</td>
+              <td class="py-3 px-4">{{ invoice.date }}</td>
+              <td class="py-3 px-4 text-right font-semibold text-orange-500">
+                {{ invoice.total }}
+              </td>
+              <td class="py-3 px-4">{{ invoice.due_date }}</td>
+              <td class="py-3 px-4">
+                <span
+                  class="inline-flex items-center px-2 py-0.5 text-xs font-medium text-white rounded-full shadow-sm"
+                  :class="{
+                    'bg-green-500': invoice.sent,
+                    'bg-red-500': !invoice.sent,
+                  }"
+                >
+                  {{ invoice.sent ? "Paid" : "Unpaid" }}
+                </span>
+              </td>
               <td class="py-3 px-4 text-center flex justify-center space-x-2">
                 <button class="text-green-500 hover:text-green-700">
                   <EyeIcon class="w-6 h-6" />
@@ -82,16 +94,22 @@
                 </button>
               </td>
             </tr>
-            <!-- Repeat rows for other invoices -->
           </tbody>
         </table>
       </div>
+      <div>
+        <Paginator :links="invoices.links" />
+      </div>
     </div>
 
-    <!--  -->
+    <!-- ***  -->
   </div>
 </template>
 
 <script setup>
+const props = defineProps({
+  invoices: Object,
+});
 import { TrashIcon, EyeIcon, PrinterIcon } from "@heroicons/vue/24/outline";
+import Paginator from "../Pagination/Paginator.vue";
 </script>

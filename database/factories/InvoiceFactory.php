@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Customer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,16 @@ class InvoiceFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'title'       => $this->faker->word(),
+            'code'        => 'INV-'.$this->faker->ean8(),
+            'customer_id' => Customer::all()->random()->id,
+            'description' => $this->faker->sentence(),
+            'date'        => $this->faker->date(),
+            'due_date'    => $this->faker->date(),
+            'sub_total'   => $this->faker->numberBetween(100, 1000),
+            'total'       => $this->faker->numberBetween(1000, 10000),
+            'paid'        => $this->faker->boolean(),
+            'sent'        => $this->faker->boolean(),
         ];
     }
 }
