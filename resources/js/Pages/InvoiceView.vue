@@ -10,7 +10,7 @@
         <div>
           <Link
             :href="route('invoice.new')"
-            class="inline-flex items-center px-4 py-3 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out"
+            class="inline-flex items-center px-4 py-3 text-sm font-medium text-white bg-slate-700 border border-transparent rounded-lg shadow-sm hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-600 transition duration-150 ease-in-out"
           >
             Create Invoice
           </Link>
