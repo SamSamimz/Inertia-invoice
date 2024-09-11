@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-Route::get('/',function() {
-    return Inertia::render('Index');
-});
+Route::inertia('/','Index')->name('home');
+Route::inertia('/invoices','InvoiceView')->name('invoice.index');
