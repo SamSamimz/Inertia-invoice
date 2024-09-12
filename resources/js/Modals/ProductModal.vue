@@ -8,17 +8,15 @@
     >
       <h2 class="text-xl font-bold mb-4">Select a Product</h2>
 
-      <!-- Search Input -->
       <div class="mb-4">
         <input
           v-model="searchQuery"
           type="text"
-          class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-4 focus:border-blue-500 focus:ring-1 focus:ring-blue-400"
+          class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-400 sm:text-base py-1 px-4 focus:outline-none"
           placeholder="Search for a product..."
         />
       </div>
 
-      <!-- Product Table -->
       <div class="overflow-x-auto">
         <table class="min-w-full bg-white border border-gray-200">
           <thead>
@@ -57,7 +55,10 @@
                   @click="selectProduct(product)"
                   class="text-blue-500 hover:text-blue-700"
                 >
-                  Select
+                  <ion-icon
+                    name="add-circle-outline"
+                    color="success"
+                  ></ion-icon>
                 </button>
               </td>
             </tr>
@@ -65,7 +66,6 @@
         </table>
       </div>
 
-      <!-- Close Button -->
       <div class="mt-6 text-right">
         <button
           @click="closeModal"
@@ -86,12 +86,9 @@ const props = defineProps({
   showProductModal: Boolean,
 });
 
-// Define the emits function
 const emit = defineEmits(["select", "close"]);
 
 const searchQuery = ref("");
-
-// Computed property to filter products based on search query
 const filteredProducts = computed(() => {
   return props.products.filter((product) =>
     product.name.toLowerCase().includes(searchQuery.value.toLowerCase())
@@ -99,7 +96,6 @@ const filteredProducts = computed(() => {
 });
 
 const selectProduct = (product) => {
-  // Emit the selected product to the parent component
   emit("select", product);
   emit("close");
 };
@@ -110,12 +106,11 @@ const closeModal = () => {
 </script>
 
   <style scoped>
-/* Ensure the modal doesn't overflow the screen */
 .max-h-full {
-  max-height: calc(100vh - 2rem); /* Keeps some space around the modal */
+  max-height: calc(100vh - 2rem);
 }
 
 .overflow-y-auto {
-  overflow-y: auto; /* Allows vertical scrolling */
+  overflow-y: auto;
 }
 </style>

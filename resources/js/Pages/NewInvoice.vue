@@ -3,7 +3,6 @@
     <div class="max-w-4xl mx-auto mt-10 bg-white p-8 rounded-lg shadow-lg">
       <h2 class="text-3xl font-bold mb-6 text-gray-800">Create New Invoice</h2>
       <form @submit.prevent="submitInvoice">
-        <!-- Client Information -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
           <div>
             <label
@@ -36,7 +35,6 @@
           </div>
         </div>
 
-        <!-- Invoice Code -->
         <div class="mb-6">
           <label for="code" class="block text-sm font-medium text-gray-700"
             >Invoice Code</label
@@ -50,7 +48,6 @@
           />
         </div>
 
-        <!-- Description -->
         <div class="mb-6">
           <label
             for="description"
@@ -66,7 +63,6 @@
           ></textarea>
         </div>
 
-        <!-- Invoice Dates -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
           <div>
             <label for="date" class="block text-sm font-medium text-gray-700"
@@ -116,6 +112,8 @@
                 type="number"
                 class="w-24 border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-400 sm:text-base py-3 px-4 focus:outline-none"
                 placeholder="Qty"
+                min="1"
+                max="10"
                 @input="calculateTotal"
               />
               <input
@@ -156,7 +154,6 @@
           </div>
         </div>
 
-        <!-- Invoice Total -->
         <div class="mb-6">
           <label for="total" class="block text-sm font-medium text-gray-700"
             >Total Amount</label
@@ -171,7 +168,6 @@
           />
         </div>
 
-        <!-- Submit Button -->
         <div>
           <button
             type="submit"
@@ -183,7 +179,6 @@
       </form>
     </div>
 
-    <!-- Product Modal -->
     <ProductModal
       :products="props.products"
       :showProductModal="showProductModal"
@@ -196,8 +191,9 @@
 <script setup>
 import { ref, watch } from "vue";
 import ProductModal from "../Modals/ProductModal.vue";
+import { useForm } from "@inertiajs/vue3";
 
-const form = ref({
+const form = useForm({
   customer_id: "",
   title: "",
   code: "",
@@ -205,10 +201,10 @@ const form = ref({
   total: 0,
   date: "",
   due_date: "",
-  items: [], // Array to hold invoice items
+  items: [],
 });
 
-const products = ref([]); // Array to hold products fetched from API
+const products = ref([]);
 const showProductModal = ref(false);
 
 const openProductModal = () => {
@@ -220,7 +216,7 @@ const closeProductModal = () => {
 };
 
 const addItem = (product) => {
-  form.value.items.push({
+  form.items.push({
     description: product.name,
     quantity: 1,
     unit_price: product.price,
@@ -230,19 +226,23 @@ const addItem = (product) => {
 };
 
 const removeItem = (index) => {
-  form.value.items.splice(index, 1);
+  form.items.splice(index, 1);
   calculateTotal();
 };
 
 const calculateTotal = () => {
-  form.value.total = form.value.items.reduce((total, item) => {
+  form.total = form.items.reduce((total, item) => {
     return total + item.quantity * item.unit_price;
   }, 0);
 };
 
 const submitInvoice = () => {
-  console.log(form.value);
-  // Add logic to submit the invoice data
+  console.log(form);
+  form.post(route("invoice.store"), {
+    onSuccess: () => {
+      form.reset();
+    },
+  });
 };
 
 const props = defineProps({
@@ -250,10 +250,5 @@ const props = defineProps({
   products: Array,
 });
 
-// Recalculate total whenever items change
-watch(() => form.value.items, calculateTotal, { deep: true });
+watch(() => form.items, calculateTotal, { deep: true });
 </script>
-
-<style scoped>
-/* Add any additional styling here if necessary */
-</style>
