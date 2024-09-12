@@ -217,6 +217,7 @@ const closeProductModal = () => {
 
 const addItem = (product) => {
   form.items.push({
+    product_id: product.id,
     description: product.name,
     quantity: 1,
     unit_price: product.price,
@@ -237,7 +238,7 @@ const calculateTotal = () => {
 };
 
 const submitInvoice = () => {
-  console.log(form);
+  // console.log(form);
   form.post(route("invoice.store"), {
     onSuccess: () => {
       form.reset();

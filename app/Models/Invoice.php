@@ -22,6 +22,11 @@ class Invoice extends Model
         return $this->belongsTo(Customer::class);
     }
 
+    public function items()
+    {
+        return $this->hasMany(InvoiceItem::class);
+    }
+
     public function getDateAttribute($value)
     {
         return Carbon::parse($value)->format('d M, Y');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Invoice;
 
 use App\Http\Controllers\Controller;
+use App\Models\Invoice;
 use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
@@ -21,6 +22,36 @@ class InvoiceController extends Controller
     public function store(Request $request)
     {
         dd($request->all());
+        $validated =  $request->validate([
+            'customer_id'           => 'required|exists:customers,id',
+            'title'                 => 'required|string',
+            'sku'                   => 'required',
+            'description'           => 'nullable|string',
+            'date'                  => 'nullable|date',
+            'due_date'              => 'nullable|date',
+            'total'                 => 'required|numeric',
+            'items'                 => 'required|array',
+            'items.*.product_id'    => 'required|exists:products,id',
+            'items.*.description'   => 'nullable|string',
+            'items.*.quantity'      => 'required|numeric',
+            'items.*.unit_price'    => 'required|numeric',
+        ]);
+
+        dd($validated);
+
+        $invoiceData = [
+            'customer_id' => $validated['customer_id'],
+            'title'       => $validated['title'],
+            'code'        => $validated['sku'],
+            'description' => $validated['description'],
+            'date'        => $validated['date'],
+            'due_date'    => $validated['due_date'],
+            'total'       => $validated['total'],
+        ];
+
+        $invoice = Invoice::create($invoiceData);
+
+        $invoice->items()->createMany($validated['items']);
     }
 
     /**

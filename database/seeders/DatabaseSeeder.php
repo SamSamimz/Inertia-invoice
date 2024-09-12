@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
         Product::factory(100)->create();
         Customer::factory(30)->create();
-        Invoice::factory(10)->create();
-        InvoiceItem::factory(20)->create();
+        // Invoice::factory(10)->create();
+        // InvoiceItem::factory(20)->create();
     }
 }
