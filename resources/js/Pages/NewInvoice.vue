@@ -2,7 +2,7 @@
   <div>
     <div class="max-w-4xl mx-auto mt-10 bg-white p-8 rounded-lg shadow-lg">
       <h2 class="text-3xl font-bold mb-6 text-gray-800">Create New Invoice</h2>
-      <form>
+      <form @submit.prevent="submitInvoice">
         <!-- Client Information -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
           <div>
@@ -12,14 +12,14 @@
               >Customer</label
             >
             <select
+              v-model="form.customer_id"
               id="customer_id"
               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-400 sm:text-base py-3 px-4 focus:outline-none"
             >
-              <!-- Add options dynamically -->
               <option value="">Select Customer</option>
-              <!-- Example options -->
-              <option value="1">Customer 1</option>
-              <option value="2">Customer 2</option>
+              <option v-for="(name, id) in customers" :key="id" :value="id">
+                {{ name }}
+              </option>
             </select>
           </div>
           <div>
@@ -27,6 +27,7 @@
               >Title</label
             >
             <input
+              v-model="form.title"
               type="text"
               id="title"
               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-400 sm:text-base py-3 px-4 focus:outline-none"
@@ -41,6 +42,7 @@
             >Invoice Code</label
           >
           <input
+            v-model="form.code"
             type="text"
             id="code"
             class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-400 sm:text-base py-3 px-4 focus:outline-none"
@@ -56,6 +58,7 @@
             >Description</label
           >
           <textarea
+            v-model="form.description"
             id="description"
             rows="4"
             class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-400 sm:text-base py-3 px-4 focus:outline-none"
@@ -70,6 +73,7 @@
               >Invoice Date</label
             >
             <input
+              v-model="form.date"
               type="date"
               id="date"
               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-400 sm:text-base py-3 px-4 focus:outline-none"
@@ -82,6 +86,7 @@
               >Due Date</label
             >
             <input
+              v-model="form.due_date"
               type="date"
               id="due_date"
               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-400 sm:text-base py-3 px-4 focus:outline-none"
@@ -95,26 +100,36 @@
             >Invoice Items</label
           >
           <div class="space-y-4">
-            <!-- Example item -->
             <div
+              v-for="(item, index) in form.items"
+              :key="index"
               class="flex items-center space-x-4 bg-gray-50 p-4 rounded-md shadow-sm"
             >
               <input
+                v-model="item.description"
                 type="text"
                 class="flex-1 border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-400 sm:text-base py-3 px-4 focus:outline-none"
                 placeholder="Item Description"
               />
               <input
+                v-model.number="item.quantity"
                 type="number"
                 class="w-24 border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-400 sm:text-base py-3 px-4 focus:outline-none"
                 placeholder="Qty"
+                @input="calculateTotal"
               />
               <input
+                v-model.number="item.unit_price"
                 type="number"
                 class="w-32 border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-400 sm:text-base py-3 px-4 focus:outline-none"
                 placeholder="Unit Price"
+                @input="calculateTotal"
               />
-              <button type="button" class="text-red-500 hover:text-red-700">
+              <button
+                type="button"
+                @click="removeItem(index)"
+                class="text-red-500 hover:text-red-700"
+              >
                 <svg
                   class="w-5 h-5"
                   fill="none"
@@ -131,10 +146,14 @@
                 </svg>
               </button>
             </div>
+            <button
+              @click="openProductModal"
+              type="button"
+              class="mt-4 text-blue-500 hover:text-blue-700"
+            >
+              + Add Another Item
+            </button>
           </div>
-          <button type="button" class="mt-4 text-blue-500 hover:text-blue-700">
-            + Add Another Item
-          </button>
         </div>
 
         <!-- Invoice Total -->
@@ -143,6 +162,7 @@
             >Total Amount</label
           >
           <input
+            v-model="form.total"
             type="number"
             id="total"
             class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-400 sm:text-base py-3 px-4 focus:outline-none"
@@ -162,7 +182,78 @@
         </div>
       </form>
     </div>
+
+    <!-- Product Modal -->
+    <ProductModal
+      :products="props.products"
+      :showProductModal="showProductModal"
+      @close="showProductModal = false"
+      @select="addItem"
+    />
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref, watch } from "vue";
+import ProductModal from "../Modals/ProductModal.vue";
+
+const form = ref({
+  customer_id: "",
+  title: "",
+  code: "",
+  description: "",
+  total: 0,
+  date: "",
+  due_date: "",
+  items: [], // Array to hold invoice items
+});
+
+const products = ref([]); // Array to hold products fetched from API
+const showProductModal = ref(false);
+
+const openProductModal = () => {
+  showProductModal.value = true;
+};
+
+const closeProductModal = () => {
+  showProductModal.value = false;
+};
+
+const addItem = (product) => {
+  form.value.items.push({
+    description: product.name,
+    quantity: 1,
+    unit_price: product.price,
+  });
+  calculateTotal();
+  closeProductModal();
+};
+
+const removeItem = (index) => {
+  form.value.items.splice(index, 1);
+  calculateTotal();
+};
+
+const calculateTotal = () => {
+  form.value.total = form.value.items.reduce((total, item) => {
+    return total + item.quantity * item.unit_price;
+  }, 0);
+};
+
+const submitInvoice = () => {
+  console.log(form.value);
+  // Add logic to submit the invoice data
+};
+
+const props = defineProps({
+  customers: Object,
+  products: Array,
+});
+
+// Recalculate total whenever items change
+watch(() => form.value.items, calculateTotal, { deep: true });
+</script>
+
+<style scoped>
+/* Add any additional styling here if necessary */
+</style>
