@@ -9,7 +9,7 @@ use App\Http\Controllers\Invoice\InvoiceController;
 
 Route::inertia('/','Index')->name('home');
 Route::inertia('/invoices','InvoiceView',[
-    'invoices' => Invoice::with('customer')->paginate(2)
+    'invoices' => Invoice::with('customer')->paginate(3)
 ])->name('invoice.index');
 Route::inertia('/invoice/new','NewInvoice',[
     'customers' => Customer::pluck('name','id')->toArray(),
@@ -19,7 +19,7 @@ Route::inertia('/invoice/new','NewInvoice',[
 Route::post('/invoice/new',[InvoiceController::class,'store']);
 Route::get('/invoices/print/{id}', [InvoiceController::class, 'print'])->name('invoice.print');
 Route::delete('/invoice/delete/{id}', [InvoiceController::class, 'destroy'])->name('invoice.delete');
-
+Route::post('/invoice/send/{id}', [InvoiceController::class, 'send'])->name('invoice.send');
 
 
 Route::inertia('/test', 'Test')->name('test');

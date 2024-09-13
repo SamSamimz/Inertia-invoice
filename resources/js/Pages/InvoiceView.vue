@@ -92,6 +92,12 @@
                   <EyeIcon class="w-6 h-6" />
                 </button>
                 <button
+                  @click="senedInvoice(invoice.id)"
+                  class="text-slate-500 hover:text-slate-700"
+                >
+                  <EnvelopeIcon class="w-6 h-6" />
+                </button>
+                <button
                   @click="viewInvoice(invoice.code)"
                   class="text-blue-500 hover:text-blue-700"
                 >
@@ -115,7 +121,7 @@
           </tbody>
         </table>
       </div>
-      <div v-if="invoices">
+      <div v-if="invoices.links">
         <Paginator :links="invoices.links" />
       </div>
     </div>
@@ -125,7 +131,12 @@
 </template>
 
 <script setup>
-import { TrashIcon, EyeIcon, PrinterIcon } from "@heroicons/vue/24/outline";
+import {
+  TrashIcon,
+  EyeIcon,
+  PrinterIcon,
+  EnvelopeIcon,
+} from "@heroicons/vue/24/outline";
 import Paginator from "../Pagination/Paginator.vue";
 import { Inertia } from "@inertiajs/inertia";
 const props = defineProps({
@@ -135,6 +146,12 @@ const props = defineProps({
 const deleteInvoice = (id) => {
   if (confirm("Are you sure you want to delete this invoice?")) {
     Inertia.delete(route("invoice.delete", id));
+  }
+};
+
+const senedInvoice = (id) => {
+  if (confirm("Are you sure you want to send this invoice?")) {
+    Inertia.post(route("invoice.send", id));
   }
 };
 

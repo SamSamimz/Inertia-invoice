@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Invoice;
 
+use Inertia\Inertia;
+use App\Mail\InvMail;
 use App\Models\Invoice;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Inertia\Inertia;
+use Illuminate\Support\Facades\Mail;
 
 class InvoiceController extends Controller
 {
@@ -94,4 +96,14 @@ class InvoiceController extends Controller
         $invoice = Invoice::findOrFail($id);
         $invoice->delete();
     }
+
+    /**
+     * Send the specified resource from storage.
+     */
+    public function send($id)
+    {
+        $invoice = Invoice::findOrFail($id);
+        Mail::to($invoice->customer->email)->send(new InvMail($invoice));
+    }
+
 }
