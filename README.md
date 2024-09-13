@@ -1,6 +1,6 @@
 # Invoice System
 
-This project is an invoice management system built with Laravel, Inertia.js, and Vue.js. It allows users to create, manage, and track invoices with ease.
+This is a learning project created to explore and understand the use of Inertia.js with Laravel and Vue.js. It simulates an invoice management system to demonstrate how these technologies can be used together. The project showcases how to create, manage, send via gmail using Inertia.js and Vue.js with Laravel as the backend. 
 
 ## Features
 - Create and manage invoices
