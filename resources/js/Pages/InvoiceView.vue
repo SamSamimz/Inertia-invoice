@@ -88,13 +88,13 @@
                 </span>
               </td>
               <td class="py-3 px-4 text-center flex justify-center space-x-2">
-                <button
-                  @click="viewInvoice(invoice)"
-                  class="text-green-500 hover:text-green-700"
-                >
+                <button class="text-green-500 hover:text-green-700">
                   <EyeIcon class="w-6 h-6" />
                 </button>
-                <button class="text-blue-500 hover:text-blue-700">
+                <button
+                  @click="viewInvoice(invoice.code)"
+                  class="text-blue-500 hover:text-blue-700"
+                >
                   <PrinterIcon class="w-6 h-6" />
                 </button>
                 <button class="text-red-500 hover:text-red-700">
@@ -129,7 +129,7 @@ const props = defineProps({
   invoices: Object,
 });
 
-const viewInvoice = (invoice) => {
-  Inertia.visit(route("invoice.print", invoice));
+const viewInvoice = (code) => {
+  Inertia.visit(route("invoice.print", code));
 };
 </script>

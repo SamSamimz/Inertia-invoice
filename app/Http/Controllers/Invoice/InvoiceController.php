@@ -13,7 +13,7 @@ class InvoiceController extends Controller
 
     public function print($code)
     {
-        $invoice = Invoice::with('customer')->where('code', $code)->first();
+        $invoice = Invoice::with(['customer','items.product'])->where('code', $code)->first();
 
         return Inertia::render('PrintPage', [
             'invoice' => $invoice

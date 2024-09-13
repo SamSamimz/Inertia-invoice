@@ -55,11 +55,27 @@
                   @click="selectProduct(product)"
                   class="text-blue-500 hover:text-blue-700"
                 >
-                  <!-- <ion-icon
-                    name="add-circle-outline"
-                    color="success"
-                  ></ion-icon> -->
-                  X
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="ionicon"
+                    viewBox="0 0 512 512"
+                  >
+                    <path
+                      d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z"
+                      fill="none"
+                      stroke="#0000FF"
+                      stroke-miterlimit="10"
+                      stroke-width="32"
+                    />
+                    <path
+                      fill="none"
+                      stroke="#0000FF"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="32"
+                      d="M256 176v160M336 256H176"
+                    />
+                  </svg>
                 </button>
               </td>
             </tr>
@@ -113,5 +129,14 @@ const closeModal = () => {
 
 .overflow-y-auto {
   overflow-y: auto;
+}
+
+.svg-container {
+  text-align: center;
+}
+
+.ionicon {
+  width: 26px;
+  height: 26px;
 }
 </style>
