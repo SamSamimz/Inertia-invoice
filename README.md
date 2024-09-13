@@ -6,7 +6,7 @@ This is a learning project created to explore and understand the use of Inertia.
 - Create and manage invoices
 - Track invoice status
 - Generate PDF invoices
-- User authentication and authorization
+- Send invoice to customer via mail
 
 ## Prerequisites
 
