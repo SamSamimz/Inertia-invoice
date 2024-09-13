@@ -80,11 +80,11 @@
                 <span
                   class="inline-flex items-center px-2 py-0.5 text-xs font-medium text-white rounded-full shadow-sm"
                   :class="{
-                    'bg-green-500': invoice.sent,
-                    'bg-red-500': !invoice.sent,
+                    'bg-green-500': invoice.paid,
+                    'bg-red-500': !invoice.paid,
                   }"
                 >
-                  {{ invoice.sent ? "Paid" : "Unpaid" }}
+                  {{ invoice.paid ? "Paid" : "Unpaid" }}
                 </span>
               </td>
               <td class="py-3 px-4 text-center flex justify-center space-x-2">

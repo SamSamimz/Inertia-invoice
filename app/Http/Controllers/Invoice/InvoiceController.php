@@ -32,6 +32,7 @@ class InvoiceController extends Controller
             'due_date'              => 'nullable|date',
             'sub_total'             => 'nullable|numeric',
             'total'                 => 'required|numeric',
+            'paid'                  => 'nullable|boolean',
             'items'                 => 'required|array|min:1',
             'items.*.product_id'    => 'required|exists:products,id',
             'items.*.quantity'      => 'required|numeric|min:1|max:10',
@@ -46,6 +47,7 @@ class InvoiceController extends Controller
             'date'        => $validated['date'],
             'due_date'    => $validated['due_date'],
             'total'       => $validated['total'],
+            'paid'        => $validated['paid'],
         ];
 
         $invoice = Invoice::create($invoiceData);
