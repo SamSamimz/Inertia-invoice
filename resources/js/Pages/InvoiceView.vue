@@ -63,7 +63,10 @@
               </th>
             </tr>
           </thead>
-          <tbody class="bg-white divide-y divide-gray-200 text-gray-700">
+          <tbody
+            v-if="invoices"
+            class="bg-white divide-y divide-gray-200 text-gray-700"
+          >
             <tr v-for="invoice in invoices.data" :key="invoice.id">
               <td class="py-3 px-4">{{ invoice.code }}</td>
               <td class="py-3 px-4">{{ invoice.title }}</td>
@@ -97,9 +100,16 @@
               </td>
             </tr>
           </tbody>
+          <tbody v-else>
+            <tr>
+              <td class="py-3 px-4 text-center" colspan="8">
+                No invoices found
+              </td>
+            </tr>
+          </tbody>
         </table>
       </div>
-      <div>
+      <div v-if="invoices.length">
         <Paginator :links="invoices.links" />
       </div>
     </div>

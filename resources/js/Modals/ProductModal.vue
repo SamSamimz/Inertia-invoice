@@ -55,10 +55,11 @@
                   @click="selectProduct(product)"
                   class="text-blue-500 hover:text-blue-700"
                 >
-                  <ion-icon
+                  <!-- <ion-icon
                     name="add-circle-outline"
                     color="success"
-                  ></ion-icon>
+                  ></ion-icon> -->
+                  X
                 </button>
               </td>
             </tr>

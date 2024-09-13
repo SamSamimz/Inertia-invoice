@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->date('date');
             $table->date('due_date');
-            $table->decimal('sub_total');
+            $table->decimal('sub_total')->nullable();
             $table->decimal('total');
             $table->boolean('paid')->default(false);
             $table->boolean('sent')->default(false);

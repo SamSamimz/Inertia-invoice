@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Invoice;
 
-use App\Http\Controllers\Controller;
 use App\Models\Invoice;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class InvoiceController extends Controller
 {
@@ -21,28 +22,25 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
-        $validated =  $request->validate([
+        $validated = $request->validate([
             'customer_id'           => 'required|exists:customers,id',
             'title'                 => 'required|string',
-            'sku'                   => 'required',
+            'code'                  => 'nullable|required',
             'description'           => 'nullable|string',
-            'date'                  => 'nullable|date',
+            'date'                  => 'required|date',
             'due_date'              => 'nullable|date',
+            'sub_total'             => 'nullable|numeric',
             'total'                 => 'required|numeric',
-            'items'                 => 'required|array',
+            'items'                 => 'required|array|min:1',
             'items.*.product_id'    => 'required|exists:products,id',
-            'items.*.description'   => 'nullable|string',
-            'items.*.quantity'      => 'required|numeric',
+            'items.*.quantity'      => 'required|numeric|min:1|max:10',
             'items.*.unit_price'    => 'required|numeric',
         ]);
-
-        dd($validated);
 
         $invoiceData = [
             'customer_id' => $validated['customer_id'],
             'title'       => $validated['title'],
-            'code'        => $validated['sku'],
+            'code' => 'INV-' . substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 6),
             'description' => $validated['description'],
             'date'        => $validated['date'],
             'due_date'    => $validated['due_date'],
@@ -52,6 +50,7 @@ class InvoiceController extends Controller
         $invoice = Invoice::create($invoiceData);
 
         $invoice->items()->createMany($validated['items']);
+        return to_route('invoice.index');
     }
 
     /**

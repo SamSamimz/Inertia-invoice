@@ -20,6 +20,9 @@
                 {{ name }}
               </option>
             </select>
+            <span v-if="form.errors.customer_id" class="text-red-500 text-sm"
+              >{{ form.errors.customer_id }}
+            </span>
           </div>
           <div>
             <label for="title" class="block text-sm font-medium text-gray-700"
@@ -32,6 +35,9 @@
               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-400 sm:text-base py-3 px-4 focus:outline-none"
               placeholder="Invoice Title"
             />
+            <span v-if="form.errors.title" class="text-red-500 text-sm">{{
+              form.errors.title
+            }}</span>
           </div>
         </div>
 
@@ -61,6 +67,9 @@
             class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-400 sm:text-base py-3 px-4 focus:outline-none"
             placeholder="Additional details"
           ></textarea>
+          <span v-if="form.errors.description" class="text-red-500 text-sm"
+            >{{ form.errors.description }}
+          </span>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
@@ -74,6 +83,9 @@
               id="date"
               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-400 sm:text-base py-3 px-4 focus:outline-none"
             />
+            <span v-if="form.errors.date" class="text-red-500 text-sm">{{
+              form.errors.date
+            }}</span>
           </div>
           <div>
             <label
@@ -87,6 +99,9 @@
               id="due_date"
               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-400 sm:text-base py-3 px-4 focus:outline-none"
             />
+            <span v-if="form.errors.due_date" class="text-red-500 text-sm">{{
+              form.errors.due_date
+            }}</span>
           </div>
         </div>
 
@@ -96,61 +111,65 @@
             >Invoice Items</label
           >
           <div class="space-y-4">
-            <div
-              v-for="(item, index) in form.items"
-              :key="index"
-              class="flex items-center space-x-4 bg-gray-50 p-4 rounded-md shadow-sm"
-            >
-              <input
-                v-model="item.description"
-                type="text"
-                class="flex-1 border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-400 sm:text-base py-3 px-4 focus:outline-none"
-                placeholder="Item Description"
-              />
-              <input
-                v-model.number="item.quantity"
-                type="number"
-                class="w-24 border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-400 sm:text-base py-3 px-4 focus:outline-none"
-                placeholder="Qty"
-                min="1"
-                max="10"
-                @input="calculateTotal"
-              />
-              <input
-                v-model.number="item.unit_price"
-                type="number"
-                class="w-32 border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-400 sm:text-base py-3 px-4 focus:outline-none"
-                placeholder="Unit Price"
-                @input="calculateTotal"
-              />
-              <button
-                type="button"
-                @click="removeItem(index)"
-                class="text-red-500 hover:text-red-700"
+            <div class="space-y-4">
+              <div
+                v-for="(item, index) in form.items"
+                :key="index"
+                class="flex items-center space-x-4 bg-gray-50 p-4 rounded-md shadow-sm"
               >
-                <svg
-                  class="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
+                <input
+                  v-model="item.description"
+                  type="text"
+                  class="flex-1 border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-400 sm:text-base py-3 px-4 focus:outline-none"
+                  placeholder="Item Description"
+                />
+                <input
+                  v-model.number="item.quantity"
+                  type="number"
+                  class="w-24 border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-400 sm:text-base py-3 px-4 focus:outline-none"
+                  placeholder="Qty"
+                  @input="calculateTotal"
+                />
+                <input
+                  v-model.number="item.unit_price"
+                  type="number"
+                  class="w-32 border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-400 sm:text-base py-3 px-4 focus:outline-none"
+                  placeholder="Unit Price"
+                  @input="calculateTotal"
+                />
+                <button
+                  type="button"
+                  @click="removeItem(index)"
+                  class="text-red-500 hover:text-red-700"
                 >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M6 18L18 6M6 6l12 12"
-                  ></path>
-                </svg>
+                  <svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+              <button
+                @click="openProductModal"
+                type="button"
+                class="mt-4 text-blue-500 hover:text-blue-700"
+              >
+                + Add Another Item
               </button>
             </div>
-            <button
-              @click="openProductModal"
-              type="button"
-              class="mt-4 text-blue-500 hover:text-blue-700"
-            >
-              + Add Another Item
-            </button>
+
+            <span v-if="qError" class="text-red-500 text-sm">
+              {{ qError }}
+            </span>
           </div>
         </div>
 
@@ -189,7 +208,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import ProductModal from "../Modals/ProductModal.vue";
 import { useForm } from "@inertiajs/vue3";
 
@@ -237,11 +256,31 @@ const calculateTotal = () => {
   }, 0);
 };
 
+const qError = computed(() => {
+  if (form.items.length > 0) {
+    return null;
+  } else {
+    return "Please add at least one item";
+  }
+});
 const submitInvoice = () => {
-  // console.log(form);
-  form.post(route("invoice.store"), {
+  if (qError.value) {
+    return;
+  }
+  if (
+    form.items.some(
+      (item) => item.quantity <= 0 || item.quantity > 10 || item.unit_price <= 0
+    )
+  ) {
+    alert("Please check the item quantity and unit price");
+    return;
+  }
+  form.post(route("invoice.new"), {
     onSuccess: () => {
       form.reset();
+    },
+    onError: () => {
+      console.log("Error", form.errors);
     },
   });
 };
