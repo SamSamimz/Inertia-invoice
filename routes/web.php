@@ -18,7 +18,7 @@ Route::inertia('/invoice/new','NewInvoice',[
 
 Route::post('/invoice/new',[InvoiceController::class,'store']);
 Route::get('/invoices/print/{id}', [InvoiceController::class, 'print'])->name('invoice.print');
-
+Route::delete('/invoice/delete/{id}', [InvoiceController::class, 'destroy'])->name('invoice.delete');
 
 
 

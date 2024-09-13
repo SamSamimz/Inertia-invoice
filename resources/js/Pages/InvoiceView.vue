@@ -97,7 +97,10 @@
                 >
                   <PrinterIcon class="w-6 h-6" />
                 </button>
-                <button class="text-red-500 hover:text-red-700">
+                <button
+                  @click="deleteInvoice(invoice.id)"
+                  class="text-red-500 hover:text-red-700"
+                >
                   <TrashIcon class="w-6 h-6" />
                 </button>
               </td>
@@ -128,6 +131,12 @@ import { Inertia } from "@inertiajs/inertia";
 const props = defineProps({
   invoices: Object,
 });
+
+const deleteInvoice = (id) => {
+  if (confirm("Are you sure you want to delete this invoice?")) {
+    Inertia.delete(route("invoice.delete", id));
+  }
+};
 
 const viewInvoice = (code) => {
   Inertia.visit(route("invoice.print", code));
