@@ -1,9 +1,9 @@
 <template>
   <div class="mt-4 flex justify-center">
     <Link
-      v-for="link in links"
+      v-for="link in filterUrls"
       :key="link.label"
-      :href="link.url"
+      :href="link.url || '#'"
       class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
       :class="{
         hidden: !link.url,
@@ -22,4 +22,6 @@
 const props = defineProps({
   links: Array,
 });
+
+const filterUrls = props.links.filter((link) => link.url !== null);
 </script>

@@ -9,7 +9,7 @@ use App\Http\Controllers\Invoice\InvoiceController;
 
 Route::inertia('/','Index')->name('home');
 Route::inertia('/invoices','InvoiceView',[
-    'invoices' => Invoice::with('customer')->paginate(5)
+    'invoices' => Invoice::with('customer')->paginate(2)
 ])->name('invoice.index');
 Route::inertia('/invoice/new','NewInvoice',[
     'customers' => Customer::pluck('name','id')->toArray(),

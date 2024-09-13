@@ -115,7 +115,7 @@
           </tbody>
         </table>
       </div>
-      <div v-if="invoices.length">
+      <div v-if="invoices">
         <Paginator :links="invoices.links" />
       </div>
     </div>
