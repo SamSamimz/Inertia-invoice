@@ -39,6 +39,11 @@ class InvMail extends Mailable implements ShouldQueue
     {
         return new Content(
             view: 'mails.inv',
+            with: [
+                'invoice'   => $this->invoice,
+                'customer'  => $this->invoice->customer,
+                'items'     => $this->invoice->items
+            ]
         );
     }
 

@@ -102,7 +102,7 @@ class InvoiceController extends Controller
      */
     public function send($id)
     {
-        $invoice = Invoice::findOrFail($id);
+        $invoice = Invoice::with(['customer','items.product'])->findOrFail($id);
         Mail::to($invoice->customer->email)->send(new InvMail($invoice));
     }
 
