@@ -42,19 +42,6 @@
         </div>
 
         <div class="mb-6">
-          <label for="code" class="block text-sm font-medium text-gray-700"
-            >Invoice Code</label
-          >
-          <input
-            v-model="form.code"
-            type="text"
-            id="code"
-            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-400 sm:text-base py-3 px-4 focus:outline-none"
-            placeholder="Unique Code"
-          />
-        </div>
-
-        <div class="mb-6">
           <label
             for="description"
             class="block text-sm font-medium text-gray-700"
@@ -215,7 +202,6 @@ import { useForm } from "@inertiajs/vue3";
 const form = useForm({
   customer_id: "",
   title: "",
-  code: "",
   description: "",
   total: 0,
   date: "",

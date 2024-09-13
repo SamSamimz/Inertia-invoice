@@ -5,8 +5,8 @@
     >
       <div class="flex justify-between mb-8">
         <div class="flex-1">
-          <h3 class="font-bold text-orange-500 mb-4">
-            Invoice: {{ invoice.code }}
+          <h3 class="font-bold mb-4">
+            Invoice: <span class="text-orange-500"> {{ invoice.code }}</span>
           </h3>
           <div>
             <h3 class="font-semibold text-gray-800 mb-2">Bill to</h3>

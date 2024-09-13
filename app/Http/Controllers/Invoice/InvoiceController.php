@@ -11,16 +11,6 @@ use Inertia\Inertia;
 class InvoiceController extends Controller
 {
 
-    public function print($code)
-    {
-        $invoice = Invoice::with(['customer','items.product'])->where('code', $code)->first();
-
-        return Inertia::render('PrintPage', [
-            'invoice' => $invoice
-        ]);
-
-    }
-
     /**
      * Display a listing of the resource.
      */
@@ -37,7 +27,6 @@ class InvoiceController extends Controller
         $validated = $request->validate([
             'customer_id'           => 'required|exists:customers,id',
             'title'                 => 'required|string',
-            'code'                  => 'nullable|required',
             'description'           => 'nullable|string',
             'date'                  => 'required|date',
             'due_date'              => 'nullable|date',
@@ -63,6 +52,20 @@ class InvoiceController extends Controller
 
         $invoice->items()->createMany($validated['items']);
         return to_route('invoice.index');
+    }
+
+
+    /**
+     * Print the Invoice
+     */
+    public function print($code)
+    {
+        $invoice = Invoice::with(['customer','items.product'])->where('code', $code)->first();
+
+        return Inertia::render('PrintPage', [
+            'invoice' => $invoice
+        ]);
+
     }
 
     /**
