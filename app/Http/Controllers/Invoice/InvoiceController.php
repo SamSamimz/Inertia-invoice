@@ -6,9 +6,21 @@ use App\Models\Invoice;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Inertia\Inertia;
 
 class InvoiceController extends Controller
 {
+
+    public function print($code)
+    {
+        $invoice = Invoice::with('customer')->where('code', $code)->first();
+
+        return Inertia::render('PrintPage', [
+            'invoice' => $invoice
+        ]);
+
+    }
+
     /**
      * Display a listing of the resource.
      */

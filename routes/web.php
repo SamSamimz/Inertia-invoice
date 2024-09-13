@@ -17,6 +17,10 @@ Route::inertia('/invoice/new','NewInvoice',[
 ])->name('invoice.new');
 
 Route::post('/invoice/new',[InvoiceController::class,'store']);
+Route::get('/invoices/print/{id}', [InvoiceController::class, 'print'])->name('invoice.print');
+
+
+
 
 Route::inertia('/test', 'Test')->name('test');
 Route::post('/test',function(Request $request){

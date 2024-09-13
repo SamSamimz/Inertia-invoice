@@ -88,7 +88,10 @@
                 </span>
               </td>
               <td class="py-3 px-4 text-center flex justify-center space-x-2">
-                <button class="text-green-500 hover:text-green-700">
+                <button
+                  @click="viewInvoice(invoice)"
+                  class="text-green-500 hover:text-green-700"
+                >
                   <EyeIcon class="w-6 h-6" />
                 </button>
                 <button class="text-blue-500 hover:text-blue-700">
@@ -119,9 +122,14 @@
 </template>
 
 <script setup>
+import { TrashIcon, EyeIcon, PrinterIcon } from "@heroicons/vue/24/outline";
+import Paginator from "../Pagination/Paginator.vue";
+import { Inertia } from "@inertiajs/inertia";
 const props = defineProps({
   invoices: Object,
 });
-import { TrashIcon, EyeIcon, PrinterIcon } from "@heroicons/vue/24/outline";
-import Paginator from "../Pagination/Paginator.vue";
+
+const viewInvoice = (invoice) => {
+  Inertia.visit(route("invoice.print", invoice));
+};
 </script>
